@@ -13,9 +13,10 @@ class Seeker(GameObject):
         steer = self.vec_limit(steer, self.maxforce)
         self.apply_force(steer)
 
-    def arrive(self, target, arrive_radius=500):
+    def arrive(self, target, arrive_radius=300):
         desired = target - self.pos
         dist = desired.length()
+        print('Dist:', dist)
 
         if dist < arrive_radius:
             print('Less', dist/arrive_radius)
@@ -26,5 +27,7 @@ class Seeker(GameObject):
             desired.scale_to_length(self.maxspeed)
 
         steer = desired - self.vel
+        print('Force before', steer.length())
         steer = self.vec_limit(steer, self.maxforce)
+        print('Force after', steer.length())
         self.apply_force(steer)

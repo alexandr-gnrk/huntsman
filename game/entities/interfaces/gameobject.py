@@ -10,7 +10,7 @@ class GameObject(ABC):
     def __init__(self, 
             pos=None, vel=None, acc=None,
             mass=1, 
-            maxspeed=500, maxforce=1000):
+            maxspeed=500, maxforce=500):
         # positon, velocity and acceleration
         self.pos = pygame.Vector2(pos) if pos else pygame.Vector2(0, 0)
         self.vel = pygame.Vector2(vel) if vel else pygame.Vector2(0, 0)
@@ -18,6 +18,7 @@ class GameObject(ABC):
         self.maxspeed = maxspeed
         self.maxforce = maxforce
         self.mass = mass
+        self.friction_magn = 100
 
     @abstractmethod
     def draw(self, camera, surface):
@@ -29,11 +30,27 @@ class GameObject(ABC):
         force.scale_to_length(force.length() / self.mass)
         self.acc += force
 
+    def apply_friction(self, dt):
+        friction = pygame.Vector2(self.vel)
+        friction.scale_to_length(self.friction_magn * dt)
+        self.vel -= pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else friction
+
+
     def update(self, dt):
+        # apply friction
+        # print(self.friction * dt)
+        # self.vel = self.vel.normalize() * self.friction * dt
+        # print((self.vel.normalize() * self.friction_magn * dt).length())
+
+        self.apply_friction(dt)
+
+        print(self.vel.length())
         self.vel += self.acc * dt
         self.vel = self.vec_limit(self.vel, self.maxspeed)
+
         self.pos += self.vel * dt
         self.acc = pygame.Vector2(0, 0)
+        print('pos:', self.pos, ', vel:', self.vel.length())
 
     @classmethod
     def vec_limit(cls, vec, limit):
