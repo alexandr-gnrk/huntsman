@@ -1,0 +1,116 @@
+import pygame
+from game.entities import Circle
+
+
+class Camera(object):
+    """Class that converts cartesian pos to pixel pos on the screen."""
+
+    def __init__(self, x, y, width, height, scale=1):
+        # top left point of camera box
+        self.x, self.y = x, y
+        self.width, self.height = width, height
+        self.scale = 1
+
+    def set_center(self, pos):
+        """Change camera postion according to passed center."""
+        self.x = pos.x - self.width/2
+        self.y = pos.y + self.height/2
+
+    def adjust(self, pos):
+        """Convert cartesian pos to pos relative to the camera."""
+        return pygame.Vector2(
+            pos.x*self.scale - self.x,
+            self.y - pos.y*self.scale)
+
+    def to_pos(self, pixel_pos):
+        return pygame.Vector2(
+            (pixel_pos.x + self.x) / self.scale,
+            (self.y - pixel_pos.y) / self.scale)
+
+class View():
+    """"Class that displays model state and shows HUD"""
+
+    BACKGROUND_COLOR = (242, 251, 255)
+
+    DEBUG_COLOR = (255, 0, 0)
+
+    def __init__(self, screen):
+        self.screen = screen
+        self.width, self.height = self.screen.get_size()
+        self.camera = Camera(0, 0, self.width, self.height)
+        self.fps = 30
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((self.width, self.height))
+
+        self.obj = Circle((0, 0), (1000, 0), (0, 0), 10, (255, 0, 0))
+
+    def redraw(self):
+        """Redraw screen according to model of game."""
+        self.camera.set_center(pygame.Vector2(0, 0))
+        # self.camera.set_center(self.obj.pos)
+
+        self.screen.fill(View.BACKGROUND_COLOR)
+        self.obj.seek(
+            self.camera.to_pos(
+                pygame.Vector2(
+                    pygame.mouse.get_pos())))
+        self.obj.draw(self.camera, self.screen)
+
+        pygame.display.flip()
+
+  
+    def start(self):
+        """Start game loop."""
+        while True:
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w:
+                        pass
+                    elif event.key == pygame.K_SPACE:
+                        pass
+
+            self.update()
+            self.redraw()
+
+    def update(self):
+        dt = self.clock.tick(self.fps) / 1000
+        self.obj.update(dt)
+
+    def draw_vector(self, x, y, dx, dy, color):
+        """Draw passed vector on the screen."""
+        pygame.draw.line(
+            self.screen,
+            color,
+            self.camera.adjust([x, y]),
+            self.camera.adjust([x+dx, y+dy]))
+        pygame.draw.circle(
+            self.screen,
+            color,
+            self.camera.adjust([x+dx, y+dy]),
+            3)
+
+    def mouse_pos_to_polar(self):
+        """Convert mouse position to polar vector."""
+        x, y = pygame.mouse.get_pos()
+        # center offset 
+        x -= self.width/2
+        y = self.height/2 - y
+        # get angle and length(speed) of vector
+        angle = math.atan2(y, x)
+        speed = math.sqrt(x**2 + y**2)
+        # setting radius of speed change zone
+        speed_bound = 0.8*min(self.width/2, self.height/2)
+        # normalize speed
+        speed = 1 if speed >= speed_bound else speed/speed_bound
+        return angle, speed
+
+if __name__ == '__main__':
+    pygame.init()
+    screen = pygame.display.set_mode((900, 600))
+
+    v = View(screen)
+    v.start()
+
