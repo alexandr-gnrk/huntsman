@@ -50,7 +50,7 @@ class View():
         # self.camera.set_center(self.obj.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
-        self.obj.seek(
+        self.obj.arrive(
             self.camera.to_pos(
                 pygame.Vector2(
                     pygame.mouse.get_pos())))

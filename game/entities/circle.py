@@ -2,10 +2,10 @@ import math
 
 import pygame
 
-from .interfaces import GameObject
+from .seeker import Seeker
 
 
-class Circle(GameObject):
+class Circle(Seeker):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color
