@@ -32,7 +32,9 @@ class FlockMember(Seeker):
 
             steer = sum_vec - self.vel
             steer = self.vec_limit(steer, self.maxforce)
-            self.apply_force(steer)
+            return steer
+        else:
+            return pygame.Vector2(0, 0)
 
 
         # desired = target - self.pos
@@ -60,7 +62,9 @@ class FlockMember(Seeker):
 
             steer = sum_vec - self.vel
             steer = self.vec_limit(steer, self.maxforce)
-            self.apply_force(steer)
+            return steer
+        else:
+            return pygame.Vector2(0, 0)
 
     def cohase(self, objects):
         sum_vec = pygame.Vector2(0, 0)
@@ -75,4 +79,6 @@ class FlockMember(Seeker):
 
         if amount > 0:
             sum_vec /= amount
-            self.seek(sum_vec)
+            return self.seek(sum_vec)
+        else:
+            return pygame.Vector2(0, 0)

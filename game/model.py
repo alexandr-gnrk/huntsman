@@ -29,11 +29,11 @@ class Model():
             # obj.wander(self.delta_time(), self.screen, self.camera)
      
             # obj.wander(dt)
-            obj.seek(target)
-            obj.wach_out_wall()
-            obj.separate(self.objs)
-            obj.align(self.objs)
-            obj.cohase(self.objs)
+            obj.apply_force(obj.seek(target))
+            obj.apply_force(obj.wach_out_wall())
+            obj.apply_force(obj.separate(self.objs))
+            obj.apply_force(obj.align(self.objs))
+            obj.apply_force(obj.cohase(self.objs))
             obj.update(dt)
 
     def draw(self, camera, surface):

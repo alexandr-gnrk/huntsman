@@ -42,7 +42,7 @@ class Wanderer(GameObject):
 
         steer = desired - self.vel
         steer = self.vec_limit(steer, self.maxforce)
-        self.apply_force(steer)
+        return steer
 
         # pygame.draw.line(
         #     screen, 

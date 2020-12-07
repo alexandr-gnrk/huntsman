@@ -35,4 +35,6 @@ class WallCoward(GameObject):
             steer = desired - self.vel
             steer = self.vec_limit(steer, self.maxforce)
             steer.scale_to_length(self.maxforce)
-            self.apply_force(steer)
+            return steer
+        else:
+            return pygame.Vector2(0, 0)

@@ -12,4 +12,4 @@ class Runner(GameObject):
         steer = desired - self.vel
         steer = self.vec_limit(steer, self.maxforce)
         steer = -steer
-        self.apply_force(steer)
+        return steer
