@@ -13,7 +13,7 @@ class Model():
         # means that size of world is [-world_size, world_size] 
         self.bounds = bounds
         self.objs = list()
-        for i in range(200):
+        for i in range(100):
             self.objs.append(
                 Circle((0, i), (1, 0), (0, 0), 5, (255, 0, 0))
                 )
@@ -29,8 +29,11 @@ class Model():
             # obj.wander(self.delta_time(), self.screen, self.camera)
      
             # obj.wander(dt)
+            obj.seek(target)
             obj.wach_out_wall()
             obj.separate(self.objs)
+            obj.align(self.objs)
+            obj.cohase(self.objs)
             obj.update(dt)
 
     def draw(self, camera, surface):

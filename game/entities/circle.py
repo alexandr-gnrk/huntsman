@@ -9,7 +9,7 @@ from .wallcoward import WallCoward
 from .flockmember import FlockMember
 
 
-class Circle(Wanderer, WallCoward, FlockMember):
+class Circle(Wanderer, WallCoward, FlockMember, Seeker):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color
