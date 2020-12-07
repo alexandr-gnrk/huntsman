@@ -2,11 +2,7 @@ import math
 
 import pygame
 
-from .seeker import Seeker
-from .runner import Runner
-from .wanderer import Wanderer
-from .wallcoward import WallCoward
-from .flockmember import FlockMember
+from .interfaces import Wanderer, WallCoward, FlockMember, Seeker
 
 
 class Circle(Wanderer, WallCoward, FlockMember, Seeker):
@@ -18,6 +14,8 @@ class Circle(Wanderer, WallCoward, FlockMember, Seeker):
         self.color = color
 
     def draw(self, camera, surface):
+        """This is circle but this method draw triangle."""
+
         # length of equilateral triangle
         side_len = (3*self.radius)/math.sqrt(3)
 

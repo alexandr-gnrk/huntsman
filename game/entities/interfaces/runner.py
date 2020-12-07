@@ -1,4 +1,4 @@
-from .interfaces import GameObject
+from .gameobject import GameObject
 
 import pygame
 

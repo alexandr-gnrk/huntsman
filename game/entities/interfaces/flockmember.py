@@ -1,4 +1,3 @@
-from .interfaces import GameObject
 from .seeker import Seeker
 
 import pygame

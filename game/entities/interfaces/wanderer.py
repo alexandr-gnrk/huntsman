@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from .interfaces import GameObject
+from .gameobject import GameObject
 
 
 class Wanderer(GameObject):
