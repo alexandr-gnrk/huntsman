@@ -26,15 +26,14 @@ class GameObject(ABC):
         pass
     
     def apply_force(self, force):
-        force = pygame.Vector2(force)
-        force.scale_to_length(force.length() / self.mass)
-        self.acc += force
+        force_cp = self.safe_normalize(force)
+        force_cp.scale_to_length(force.length() / self.mass)
+        self.acc += force_cp
 
     def apply_friction(self, dt):
-        friction = pygame.Vector2(self.vel)
+        friction = self.direction()
         friction.scale_to_length(self.friction_magn * dt)
-        self.vel -= pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else friction
-
+        self.vel = pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else self.vel - friction
 
     def update(self, dt):
         # apply friction
@@ -44,13 +43,22 @@ class GameObject(ABC):
 
         self.apply_friction(dt)
 
-        print(self.vel.length())
         self.vel += self.acc * dt
         self.vel = self.vec_limit(self.vel, self.maxspeed)
 
         self.pos += self.vel * dt
         self.acc = pygame.Vector2(0, 0)
-        print('pos:', self.pos, ', vel:', self.vel.length())
+
+        # self.pos = pygame.Vector2(self.pos.x % 900, self.pos.y % 600)
+
+    def direction(self):
+        return self.safe_normalize(self.vel)
+
+    def safe_normalize(self, vec):
+        try:
+            return vec.normalize()
+        except ValueError:
+            return pygame.Vector2(0, 1)
 
     @classmethod
     def vec_limit(cls, vec, limit):

@@ -18,9 +18,15 @@ class Camera(object):
 
     def adjust(self, pos):
         """Convert cartesian pos to pos relative to the camera."""
-        return pygame.Vector2(
+        # return pygame.Vector2(
+        #     pos.x*self.scale - self.x,
+        #     self.y - pos.y*self.scale)
+
+        pos = pygame.Vector2(
             pos.x*self.scale - self.x,
             self.y - pos.y*self.scale)
+
+        return pygame.Vector2(pos.x % 900, pos.y % 600)
 
     def to_pos(self, pixel_pos):
         return pygame.Vector2(
@@ -42,7 +48,7 @@ class View():
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
 
-        self.obj = Circle((0, 0), (1, 0), (0, 0), 10, (255, 0, 0))
+        self.obj = Circle((0, 0), (1, 0), (0, 0), 5, (255, 0, 0))
 
     def redraw(self):
         """Redraw screen according to model of game."""
@@ -50,13 +56,14 @@ class View():
         # self.camera.set_center(self.obj.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
-        self.obj.run_away(
-            self.camera.to_pos(
-                pygame.Vector2(
-                    pygame.mouse.get_pos())))
-        print("Mouse:", self.camera.to_pos(
-                pygame.Vector2(
-                    pygame.mouse.get_pos())))
+        target = self.camera.to_pos(
+            pygame.Vector2(
+                pygame.mouse.get_pos()))
+        # self.obj.run_away(
+        #     self.camera.to_pos(
+        #         pygame.Vector2(
+        #             pygame.mouse.get_pos())))
+        self.obj.wander(self.delta_time(), self.screen, self.camera)
         self.obj.draw(self.camera, self.screen)
 
         pygame.display.flip()
@@ -79,8 +86,7 @@ class View():
             self.redraw()
 
     def update(self):
-        dt = self.clock.tick(self.fps) / 1000
-        self.obj.update(dt)
+        self.obj.update(self.delta_time())
 
     def draw_vector(self, x, y, dx, dy, color):
         """Draw passed vector on the screen."""
@@ -109,6 +115,10 @@ class View():
         # normalize speed
         speed = 1 if speed >= speed_bound else speed/speed_bound
         return angle, speed
+
+    def delta_time(self):
+        return self.clock.tick(self.fps) / 1000
+    
 
 if __name__ == '__main__':
     pygame.init()

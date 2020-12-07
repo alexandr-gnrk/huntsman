@@ -4,13 +4,14 @@ import pygame
 
 from .seeker import Seeker
 from .runner import Runner
+from .wonderer import Wonderer
 
 
-class Circle(Runner):
+class Circle(Wonderer):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color
-        super().__init__(pos, vel, acc)
+        super().__init__(pos=pos, vel=vel, acc=acc)
         self.radius = radius
         self.color = color
 
@@ -18,7 +19,7 @@ class Circle(Runner):
         # length of equilateral triangle
         side_len = (3*self.radius)/math.sqrt(3)
 
-        point1 = pygame.Vector2(self.vel)
+        point1 = self.direction()
         point1.scale_to_length(self.radius)
 
         point2 = pygame.Vector2(point1).rotate(150)
