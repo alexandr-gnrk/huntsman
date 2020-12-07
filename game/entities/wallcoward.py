@@ -31,10 +31,8 @@ class WallCoward(GameObject):
         elif self.pos.y < bottom_right.y + self.WALL_AFRAID_RADIUS:
             desired += pygame.Vector2(self.vel.x, self.maxspeed)
 
-        print(self.pos, desired)
         if desired.length() > 0:
             steer = desired - self.vel
             steer = self.vec_limit(steer, self.maxforce)
             steer.scale_to_length(self.maxforce)
-            print(steer)
             self.apply_force(steer)

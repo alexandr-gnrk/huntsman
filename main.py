@@ -1,5 +1,6 @@
 import pygame
 from game.entities import Circle
+from game import Model
 
 
 class Camera(object):
@@ -37,6 +38,7 @@ class View():
     """"Class that displays model state and shows HUD"""
 
     BACKGROUND_COLOR = (242, 251, 255)
+    # BACKGROUND_COLOR = (0, 0, 0)
 
     DEBUG_COLOR = (255, 0, 0)
 
@@ -44,11 +46,10 @@ class View():
         self.screen = screen
         self.width, self.height = self.screen.get_size()
         self.camera = Camera(0, 0, self.width, self.height)
-        self.fps = 30
+        self.fps = 60
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
-
-        self.obj = Circle((0, 0), (1, 0), (0, 0), 5, (255, 0, 0))
+        self.model = Model()
 
     def redraw(self):
         """Redraw screen according to model of game."""
@@ -56,17 +57,8 @@ class View():
         # self.camera.set_center(self.obj.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
-        target = self.camera.to_pos(
-            pygame.Vector2(
-                pygame.mouse.get_pos()))
-        # self.obj.run_away(
-        #     self.camera.to_pos(
-        #         pygame.Vector2(
-        #             pygame.mouse.get_pos())))
-        self.obj.wander(self.delta_time())
-        self.obj.wach_out_wall()
-        # self.obj.wander(self.delta_time(), self.screen, self.camera)
-        self.obj.draw(self.camera, self.screen)
+
+        self.model.draw(self.camera, self.screen)
 
         pygame.display.flip()
 
@@ -88,7 +80,12 @@ class View():
             self.update()
 
     def update(self):
-        self.obj.update(self.delta_time())
+        target = self.camera.to_pos(
+            pygame.Vector2(
+                pygame.mouse.get_pos()))
+        self.model.update(self.delta_time(), target)
+        # for obj in self.objs:
+        #     obj.update(self.delta_time())
 
     def draw_vector(self, x, y, dx, dy, color):
         """Draw passed vector on the screen."""

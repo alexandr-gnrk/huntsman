@@ -6,9 +6,10 @@ from .seeker import Seeker
 from .runner import Runner
 from .wanderer import Wanderer
 from .wallcoward import WallCoward
+from .flockmember import FlockMember
 
 
-class Circle(Wanderer, WallCoward):
+class Circle(Wanderer, WallCoward, FlockMember):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color
