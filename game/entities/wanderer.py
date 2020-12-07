@@ -5,7 +5,7 @@ import pygame
 from .interfaces import GameObject
 
 
-class Wonderer(GameObject):
+class Wanderer(GameObject):
 
     # degrees per second
     ANGLE_CHANGE_SPEED = 45*12
@@ -20,7 +20,7 @@ class Wonderer(GameObject):
         # self.wander_distance = 70
         # self.wander_radius = 50
 
-    def wander(self, dt, screen, camera):
+    def wander(self, dt):
         delta_angle = self.ANGLE_CHANGE_SPEED*dt
         is_add_angle = random.choice([True, False])
 

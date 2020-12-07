@@ -10,7 +10,7 @@ class GameObject(ABC):
     def __init__(self, 
             pos=None, vel=None, acc=None,
             mass=1, 
-            maxspeed=500, maxforce=500):
+            maxspeed=500, maxforce=1000):
         # positon, velocity and acceleration
         self.pos = pygame.Vector2(pos) if pos else pygame.Vector2(0, 0)
         self.vel = pygame.Vector2(vel) if vel else pygame.Vector2(0, 0)
@@ -36,11 +36,6 @@ class GameObject(ABC):
         self.vel = pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else self.vel - friction
 
     def update(self, dt):
-        # apply friction
-        # print(self.friction * dt)
-        # self.vel = self.vel.normalize() * self.friction * dt
-        # print((self.vel.normalize() * self.friction_magn * dt).length())
-
         self.apply_friction(dt)
 
         self.vel += self.acc * dt

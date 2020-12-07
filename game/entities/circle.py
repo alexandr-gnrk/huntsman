@@ -4,10 +4,11 @@ import pygame
 
 from .seeker import Seeker
 from .runner import Runner
-from .wonderer import Wonderer
+from .wanderer import Wanderer
+from .wallcoward import WallCoward
 
 
-class Circle(Wonderer):
+class Circle(Wanderer, WallCoward):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color

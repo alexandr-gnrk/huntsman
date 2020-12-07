@@ -18,15 +18,15 @@ class Camera(object):
 
     def adjust(self, pos):
         """Convert cartesian pos to pos relative to the camera."""
-        # return pygame.Vector2(
-        #     pos.x*self.scale - self.x,
-        #     self.y - pos.y*self.scale)
-
-        pos = pygame.Vector2(
+        return pygame.Vector2(
             pos.x*self.scale - self.x,
             self.y - pos.y*self.scale)
 
-        return pygame.Vector2(pos.x % 900, pos.y % 600)
+        # pos = pygame.Vector2(
+        #     pos.x*self.scale - self.x,
+        #     self.y - pos.y*self.scale)
+
+        # return pygame.Vector2(pos.x % 900, pos.y % 600)
 
     def to_pos(self, pixel_pos):
         return pygame.Vector2(
@@ -63,7 +63,9 @@ class View():
         #     self.camera.to_pos(
         #         pygame.Vector2(
         #             pygame.mouse.get_pos())))
-        self.obj.wander(self.delta_time(), self.screen, self.camera)
+        self.obj.wander(self.delta_time())
+        self.obj.wach_out_wall()
+        # self.obj.wander(self.delta_time(), self.screen, self.camera)
         self.obj.draw(self.camera, self.screen)
 
         pygame.display.flip()
@@ -82,8 +84,8 @@ class View():
                     elif event.key == pygame.K_SPACE:
                         pass
 
-            self.update()
             self.redraw()
+            self.update()
 
     def update(self):
         self.obj.update(self.delta_time())
