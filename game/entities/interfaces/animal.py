@@ -2,10 +2,10 @@ import math
 
 import pygame
 
-from .interfaces import Wanderer, WallCoward, FlockMember, Seeker
+from .gameobject import GameObject
 
 
-class Circle(Wanderer, WallCoward, FlockMember, Seeker):
+class Animal(GameObject):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color

@@ -28,10 +28,10 @@ class Model():
 
             # obj.wander(self.delta_time(), self.screen, self.camera)
      
-            # obj.wander(dt)
-            obj.apply_force(obj.seek(target))
+            obj.apply_force(obj.wander(dt))
+            # obj.apply_force(obj.seek(target))
             obj.apply_force(obj.wach_out_wall())
-            obj.apply_force(obj.separate(self.objs))
+            obj.apply_force(obj.separate(self.objs) * 3)
             obj.apply_force(obj.align(self.objs))
             obj.apply_force(obj.cohase(self.objs))
             obj.update(dt)
