@@ -3,9 +3,10 @@ import math
 import pygame
 
 from .seeker import Seeker
+from .runner import Runner
 
 
-class Circle(Seeker):
+class Circle(Runner):
 
     def __init__(self, pos, vel, acc, radius, color):
         # radius and color

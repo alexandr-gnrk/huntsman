@@ -42,7 +42,7 @@ class View():
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
 
-        self.obj = Circle((0, 0), (1000, 0), (0, 0), 10, (255, 0, 0))
+        self.obj = Circle((0, 0), (1, 0), (0, 0), 10, (255, 0, 0))
 
     def redraw(self):
         """Redraw screen according to model of game."""
@@ -50,7 +50,7 @@ class View():
         # self.camera.set_center(self.obj.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
-        self.obj.seek(
+        self.obj.run_away(
             self.camera.to_pos(
                 pygame.Vector2(
                     pygame.mouse.get_pos())))
