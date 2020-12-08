@@ -1,21 +1,24 @@
-import math
-
 import pygame
 
-from .gameobject import GameObject
+from .interfaces import GameObject
 
+class Hunter(GameObject):
 
-class Animal(GameObject):
+    def __init__(self, pos):
+        super().__init__(
+            pos=pos,
+            radius=5,
+            color=(255, 0, 0),
+            )
 
-    def __init__(self, pos, vel, acc, radius, color):
-        # radius and color
-        super().__init__(pos=pos, vel=vel, acc=acc)
-        self.radius = radius
-        self.color = color
+    def update(self, objs, dt):
+        super().update(dt)
+
+    def update_helth(self, dt):
+        self.helth -= self.STARVATION_SPEED*dt
+
 
     def draw(self, camera, surface):
-        """This is circle but this method draw triangle."""
-
         # length of equilateral triangle
         side_len = (3*self.radius)/math.sqrt(3)
 
@@ -39,4 +42,3 @@ class Animal(GameObject):
                 camera.adjust(point1), 
                 camera.adjust(point2), 
                 camera.adjust(point3)))
-

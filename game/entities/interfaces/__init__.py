@@ -1,4 +1,3 @@
-from .animal import Animal
 from .flockmember import FlockMember
 from .gameobject import GameObject
 from .runner import Runner

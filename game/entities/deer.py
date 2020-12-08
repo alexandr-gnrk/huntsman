@@ -1,9 +1,9 @@
 import pygame
 
-from .interfaces import Animal, Wanderer, FlockMember, WallCoward
+from .interfaces import Wanderer, FlockMember, WallCoward
 from .wolf import Wolf
 
-class Deer(Animal, Wanderer, FlockMember, WallCoward):
+class Deer(Wanderer, FlockMember, WallCoward):
 
     VIEW_RADIUS = 100
     DESIRED_SEPARATION = 20
@@ -13,8 +13,6 @@ class Deer(Animal, Wanderer, FlockMember, WallCoward):
     def __init__(self, pos, family_id=0):
         super().__init__(
             pos=pos,
-            vel=pygame.Vector2(0, 0),
-            acc=pygame.Vector2(0, 0),
             radius=5,
             color=(102, 51, 0),
             )
@@ -36,7 +34,7 @@ class Deer(Animal, Wanderer, FlockMember, WallCoward):
         cohase = self.cohase(family, self.COHESION_RADIUS)
         walls = self.wach_out_wall()
 
-        self.apply_force(wander)
+        self.apply_force(wander*0.2)
         if separate_predators.length() > 0:
             self.apply_force(separate_predators*2)
         else:
@@ -44,6 +42,6 @@ class Deer(Animal, Wanderer, FlockMember, WallCoward):
             self.apply_force(align)
             self.apply_force(cohase)
     
-        self.apply_force(walls)
+        self.apply_force(walls*2)
 
         super().update(dt)

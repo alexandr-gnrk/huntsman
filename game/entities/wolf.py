@@ -1,8 +1,8 @@
 import pygame
 
-from .interfaces import Animal, Wanderer, WallCoward, Seeker
+from .interfaces import Wanderer, WallCoward, Seeker
 
-class Wolf(Animal, Seeker, Wanderer, WallCoward):
+class Wolf(Seeker, Wanderer, WallCoward):
 
     VIEW_RADIUS = 100
     KILL_DISTANCE = 8
@@ -11,10 +11,8 @@ class Wolf(Animal, Seeker, Wanderer, WallCoward):
     def __init__(self, pos):
         super().__init__(
             pos=pos,
-            vel=pygame.Vector2(0, 0),
-            acc=pygame.Vector2(0, 0),
             radius=4,
-            color=(255, 0, 0),
+            color=(0, 0, 0),
             )
         self.helth = 100
 
@@ -30,6 +28,7 @@ class Wolf(Animal, Seeker, Wanderer, WallCoward):
             if not isinstance(obj, Wolf):
                 dist = self.pos.distance_to(obj.pos)
                 if dist < self.KILL_DISTANCE:
+                    obj.kill()
                     objs.remove(obj)
                     self.helth = 100
                 elif dist < self.VIEW_RADIUS and dist < min_dist:
@@ -43,9 +42,9 @@ class Wolf(Animal, Seeker, Wanderer, WallCoward):
             seek = self.seek(prey.pos)
             self.apply_force(seek*2)
         else:
-            self.apply_force(wander)
+            self.apply_force(wander*0.3)
     
-        self.apply_force(walls)
+        self.apply_force(walls*2)
 
         super().update(dt)
 
