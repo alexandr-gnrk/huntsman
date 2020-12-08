@@ -38,7 +38,10 @@ class View():
 
     # BACKGROUND_COLOR = (242, 251, 255)
     # BACKGROUND_COLOR = (0, 0, 0)
-    BACKGROUND_COLOR = (0, 138, 0)
+    BACKGROUND_COLOR = (0, 0, 0)
+    BACKGROUND_COLOR = (0, 100, 0)
+
+    FOREST_COLOR = (0, 138, 0)
     # GRID_COLOR = (226, 234, 238)
     GRID_COLOR = (0, 120, 0)
     DEBUG_COLOR = (255, 0, 0)
@@ -50,7 +53,9 @@ class View():
         self.fps = 60
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.model = Model()
+        self.model = Model(bounds=(
+                pygame.Vector2(-self.width/2, self.height/2),
+                pygame.Vector2(self.width/2, -self.height/2)))
         self.moving_direction = pygame.Vector2(0, 0)
 
 
@@ -60,7 +65,7 @@ class View():
             self.camera.set_center(self.model.hunter.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
-
+        self.draw_forest()
         self.draw_grid()
         self.model.draw(self.camera, self.screen)
 
@@ -100,27 +105,63 @@ class View():
         # for obj in self.objs:
         #     obj.update(self.delta_time())
 
-    def draw_grid(self, step=35):
+    def draw_forest(self):
+        size = (
+            self.model.bounds[1].x - self.model.bounds[0].x,
+            self.model.bounds[0].y - self.model.bounds[1].y)
+        rect = (
+            self.camera.adjust(self.model.bounds[0]),
+            size)
+        pygame.draw.rect(
+            self.screen,
+            self.FOREST_COLOR,
+            rect)
+
+    def draw_grid(self, step=50):
         """Draw grid on screen with passed step."""
         top_left = self.model.bounds[0]
         bottom_right = self.model.bounds[1]
-        for i in range(int(top_left.x), int(bottom_right.x)+step, step):
-            start_coord = pygame.Vector2(top_left.x, i)
-            end_coord = pygame.Vector2(bottom_right.x, i)
+
+        x = top_left.x
+        while x <= bottom_right.x:
+            start = pygame.Vector2(x, top_left.y)
+            end = pygame.Vector2(x, bottom_right.y)
             pygame.draw.line(
-                self.screen, 
-                View.GRID_COLOR, 
-                self.camera.adjust(start_coord), 
-                self.camera.adjust(end_coord), 
-                2)
-            start_coord = pygame.Vector2(i, top_left.y)
-            end_coord = pygame.Vector2(i, bottom_right.y)
+                self.screen,
+                self.GRID_COLOR,
+                self.camera.adjust(start),
+                self.camera.adjust(end))
+            x += step
+
+        y = bottom_right.y
+        while y <= top_left.y:
+            start = pygame.Vector2(bottom_right.x, y)
+            end = pygame.Vector2(top_left.x, y)
             pygame.draw.line(
-                self.screen, 
-                View.GRID_COLOR, 
-                self.camera.adjust(-start_coord), 
-                self.camera.adjust(-end_coord), 
-                2)
+                self.screen,
+                self.GRID_COLOR,
+                self.camera.adjust(start),
+                self.camera.adjust(end))
+            y += step
+
+
+        # for i in range(int(top_left.x), int(bottom_right.x)+step, step):
+        #     start_coord = pygame.Vector2(top_left.x, i)
+        #     end_coord = pygame.Vector2(bottom_right.x, i)
+        #     pygame.draw.line(
+        #         self.screen, 
+        #         View.GRID_COLOR, 
+        #         self.camera.adjust(start_coord), 
+        #         self.camera.adjust(end_coord), 
+        #         2)
+        #     start_coord = pygame.Vector2(i, top_left.y)
+        #     end_coord = pygame.Vector2(i, bottom_right.y)
+        #     pygame.draw.line(
+        #         self.screen, 
+        #         View.GRID_COLOR, 
+        #         self.camera.adjust(-start_coord), 
+        #         self.camera.adjust(-end_coord), 
+        #         2)
 
     def draw_vector(self, x, y, dx, dy, color):
         """Draw passed vector on the screen."""
