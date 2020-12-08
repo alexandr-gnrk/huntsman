@@ -10,12 +10,12 @@ class Deer(Wanderer, FlockMember, WallCoward):
     ALIGN_RADIUS = 50
     COHESION_RADIUS = 1000
 
-    def __init__(self, pos, family_id=0):
+    def __init__(self, pos, family_id=0, **kwargs):
         super().__init__(
             pos=pos,
             radius=5,
             color=(102, 51, 0),
-            )
+            **kwargs)
         self.family_id = family_id
 
     def update(self, objs, dt):

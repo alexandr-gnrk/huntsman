@@ -56,8 +56,8 @@ class View():
 
     def redraw(self):
         """Redraw screen according to model of game."""
-        self.camera.set_center(pygame.Vector2(0, 0))
-        # self.camera.set_center(self.obj.pos)
+        if self.model.hunter.is_alive:
+            self.camera.set_center(self.model.hunter.pos)
 
         self.screen.fill(View.BACKGROUND_COLOR)
 

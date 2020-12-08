@@ -8,12 +8,12 @@ class Wolf(Seeker, Wanderer, WallCoward):
     KILL_DISTANCE = 8
     STARVATION_SPEED = 10
 
-    def __init__(self, pos):
+    def __init__(self, pos, **kwargs):
         super().__init__(
             pos=pos,
             radius=4,
             color=(0, 0, 0),
-            )
+            **kwargs)
         self.helth = 100
 
     def update(self, objs, dt):

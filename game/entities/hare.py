@@ -7,11 +7,12 @@ class Hare(Wanderer, FlockMember, WallCoward):
 
     VIEW_RADIUS = 100
 
-    def __init__(self, pos):
+    def __init__(self, pos, **kwargs):
         super().__init__(
             pos=pos,
             radius=4,
-            color=(153, 153, 102))
+            color=(153, 153, 102),
+            **kwargs)
 
     def update(self, objs, dt):
         wander = self.wander(dt)

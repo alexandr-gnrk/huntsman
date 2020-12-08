@@ -18,12 +18,19 @@ class Model():
         self.objects = [self.hunter]
 
         # self.objects = list()
-        self.objects.extend([Hare((0, i)) for i in range(1)])
+        for i in range(1):
+            self.objects.append(
+                Hare((0, i), walls_rect=self.bounds))
 
-        self.objects.extend([Deer((0, i)) for i in range(10)])
-        self.objects.extend([Deer((0, i), family_id=1) for i in range(20)])
+        for i in range(10):
+            self.objects.append(
+                Deer((0, i), walls_rect=self.bounds))
+            self.objects.append(
+                Deer((0, i), family_id=1, walls_rect=self.bounds))
 
-        self.objects.extend([Wolf((200, 200)) for i in range(1)])
+        for i in range(1):
+            self.objects.append(
+                Wolf((200, 200), walls_rect=self.bounds))         
 
 
     def update(self, dt, target):
