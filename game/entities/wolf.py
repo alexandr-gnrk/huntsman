@@ -6,7 +6,7 @@ class Wolf(Seeker, Wanderer, WallCoward):
 
     VIEW_RADIUS = 100
     KILL_DISTANCE = 8
-    STARVATION_SPEED = 10
+    STARVATION_SPEED = 3
 
     def __init__(self, pos, **kwargs):
         super().__init__(

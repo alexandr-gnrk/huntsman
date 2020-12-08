@@ -2,6 +2,7 @@ import pygame
 
 from .interfaces import Wanderer, FlockMember, WallCoward
 from .wolf import Wolf
+from .hunter import Hunter
 
 class Deer(Wanderer, FlockMember, WallCoward):
 
@@ -24,7 +25,7 @@ class Deer(Wanderer, FlockMember, WallCoward):
         for obj in objs:
             if isinstance(obj, Deer) and obj.family_id == self.family_id:
                 family.append(obj)
-            elif isinstance(obj, Wolf):
+            elif isinstance(obj, (Wolf, Hunter)):
                 predators.append(obj)
 
         wander = self.wander(dt)

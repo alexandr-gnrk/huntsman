@@ -9,18 +9,18 @@ class Camera(object):
         # top left point of camera box
         self.x, self.y = x, y
         self.width, self.height = width, height
-        self.scale = 1
+        self.scale = 1.5
 
     def set_center(self, pos):
         """Change camera postion according to passed center."""
-        self.x = pos.x - self.width/2
-        self.y = pos.y + self.height/2
+        self.x = pos.x - self.width*self.scale/2
+        self.y = pos.y + self.height*self.scale/2
 
     def adjust(self, pos):
         """Convert cartesian pos to pos relative to the camera."""
         return pygame.Vector2(
-            pos.x*self.scale - self.x,
-            self.y - pos.y*self.scale)
+            (pos.x - self.x)/self.scale,
+            (self.y - pos.y)/self.scale)
 
         # pos = pygame.Vector2(
         #     pos.x*self.scale - self.x,
@@ -30,8 +30,8 @@ class Camera(object):
 
     def to_pos(self, pixel_pos):
         return pygame.Vector2(
-            (pixel_pos.x + self.x) / self.scale,
-            (self.y - pixel_pos.y) / self.scale)
+            (pixel_pos.x * self.scale + self.x),
+            (self.y - pixel_pos.y * self.scale))
 
 class View():
     """"Class that displays model state and shows HUD"""
@@ -53,9 +53,12 @@ class View():
         self.fps = 60
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
+        # self.model = Model(bounds=(
+        #         pygame.Vector2(-self.width/2, self.height/2),
+        #         pygame.Vector2(self.width/2, -self.height/2)))
         self.model = Model(bounds=(
-                pygame.Vector2(-self.width/2, self.height/2),
-                pygame.Vector2(self.width/2, -self.height/2)))
+                pygame.Vector2(-1000, 1000),
+                pygame.Vector2(1000, -1000)))
         self.moving_direction = pygame.Vector2(0, 0)
 
 
@@ -86,12 +89,14 @@ class View():
             for event in events:
                 if event.type == pygame.QUIT:
                     exit()
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key in vector_map:
                         self.moving_direction += vector_map[event.key]
-                elif event.type == pygame.KEYUP:
+                if event.type == pygame.KEYUP:
                     if event.key in vector_map:
                         self.moving_direction -= vector_map[event.key]
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.model.shoot(self.camera)
 
             self.redraw()
             self.update()
@@ -106,16 +111,28 @@ class View():
         #     obj.update(self.delta_time())
 
     def draw_forest(self):
-        size = (
-            self.model.bounds[1].x - self.model.bounds[0].x,
-            self.model.bounds[0].y - self.model.bounds[1].y)
-        rect = (
-            self.camera.adjust(self.model.bounds[0]),
-            size)
-        pygame.draw.rect(
+        # size = (
+        #     self.model.bounds[1].x - self.model.bounds[0].x,
+        #     self.model.bounds[0].y - self.model.bounds[1].y)
+        # rect = (
+        #     self.camera.adjust(self.model.bounds[0]),
+        #     size)
+        top_left = self.camera.adjust(self.model.bounds[0])
+        top_right = self.camera.adjust(
+            pygame.Vector2(
+                self.model.bounds[1].x,
+                self.model.bounds[0].y))
+
+        bottom_right = self.camera.adjust(self.model.bounds[1])
+        bottom_left = self.camera.adjust(
+            pygame.Vector2(
+                self.model.bounds[0].x,
+                self.model.bounds[1].y))
+
+        pygame.draw.polygon(
             self.screen,
             self.FOREST_COLOR,
-            rect)
+            (top_left, top_right, bottom_right, bottom_left))
 
     def draw_grid(self, step=50):
         """Draw grid on screen with passed step."""

@@ -26,8 +26,15 @@ class GameObject(ABC):
         self.color = color
 
 
-    def draw(self, camera, surface, direction=None):
+    def draw(self, camera, surface, direction=None, triangle=True):
         """This is circle but this method draw triangle."""
+        if not triangle:
+            pygame.draw.circle(
+                surface,
+                self.color,
+                camera.adjust(self.pos),
+                self.radius)
+            return
 
         # length of equilateral triangle
         side_len = (3*self.radius)/math.sqrt(3)
@@ -59,6 +66,8 @@ class GameObject(ABC):
         self.acc += force_cp
 
     def apply_friction(self, dt):
+        # if self.friction_magn == 0:
+        #     return
         friction = self.direction()
         friction.scale_to_length(self.friction_magn * dt)
         self.vel = pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else self.vel - friction
@@ -76,6 +85,11 @@ class GameObject(ABC):
         self.acc = pygame.Vector2(0, 0)
 
         # self.pos = pygame.Vector2(self.pos.x % 900, self.pos.y % 600)
+
+    def is_collide(self, obj):
+        if self.pos.distance_to(obj.pos) < self.radius + obj.radius:
+            return True
+        return False
 
     def direction(self):
         return self.safe_normalize(self.vel)
