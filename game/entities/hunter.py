@@ -14,10 +14,15 @@ class Hunter(GameObject):
     def __init__(self, pos):
         super().__init__(
             pos=pos,
-            radius=5,
-            color=(255, 0, 0),
+            radius=7,
+            # color=(255, 0, 0),
+            # color=(204, 51, 0),
+            color=(204, 0, 0),
+            # color=(255, 102, 0),
+            # color=(255, 51, 0),
             )
         self.bullets_left = 100
+        self.killed = 0
         self.bullets = list()
 
     def update(self, objs, dt):
@@ -31,8 +36,8 @@ class Hunter(GameObject):
             for obj in objs:
                 if bullet.is_collide(obj) and not isinstance(obj, Hunter):
                     objs.remove(obj)
+                    self.killed += 1
             
-
         super().update(dt)
 
     def move(self, direction):

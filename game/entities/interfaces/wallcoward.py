@@ -20,7 +20,6 @@ class WallCoward(GameObject):
         bottom_right = self.walls_rect[1]
 
         desired = pygame.Vector2(0, 0)
-        # print('diff', self.pos.x - top_left.x, bottom_right.x - self.pos.x)
         if self.pos.x < top_left.x + self.WALL_AFRAID_RADIUS:     
             desired += pygame.Vector2(self.maxspeed, self.vel.y)
         elif self.pos.x > bottom_right.x - self.WALL_AFRAID_RADIUS:

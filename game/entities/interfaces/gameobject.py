@@ -27,7 +27,6 @@ class GameObject(ABC):
 
 
     def draw(self, camera, surface, direction=None, triangle=True):
-        """This is circle but this method draw triangle."""
         if not triangle:
             pygame.draw.circle(
                 surface,
@@ -52,13 +51,20 @@ class GameObject(ABC):
         point2 += self.pos
         point3 += self.pos
 
+        points = (
+                camera.adjust(point1), 
+                camera.adjust(point2), 
+                camera.adjust(point3))
         pygame.draw.polygon(
             surface, 
             self.color, 
-            (
-                camera.adjust(point1), 
-                camera.adjust(point2), 
-                camera.adjust(point3)))
+            points,
+            width=0)
+        pygame.draw.polygon(
+            surface, 
+            self.to_border_color(self.color), 
+            points,
+            width=1)
     
     def apply_force(self, force):
         force_cp = self.safe_normalize(force)
@@ -66,8 +72,6 @@ class GameObject(ABC):
         self.acc += force_cp
 
     def apply_friction(self, dt):
-        # if self.friction_magn == 0:
-        #     return
         friction = self.direction()
         friction.scale_to_length(self.friction_magn * dt)
         self.vel = pygame.Vector2(0, 0) if friction.length() >= self.vel.length() else self.vel - friction
@@ -84,8 +88,6 @@ class GameObject(ABC):
         self.pos += self.vel * dt
         self.acc = pygame.Vector2(0, 0)
 
-        # self.pos = pygame.Vector2(self.pos.x % 900, self.pos.y % 600)
-
     def is_collide(self, obj):
         if self.pos.distance_to(obj.pos) < self.radius + obj.radius:
             return True
@@ -99,6 +101,11 @@ class GameObject(ABC):
             return vec.normalize()
         except ValueError:
             return pygame.Vector2(0, 1)
+
+    @classmethod
+    def to_border_color(cls, color):
+        mult = 0.8
+        return [part*mult for part in color]
 
     @classmethod
     def vec_limit(cls, vec, limit):

@@ -7,32 +7,19 @@ from .entities import Hare, Deer, Wolf, Hunter
 class Model():
     """Class that represents game state."""
 
-    def __init__(self, bounds=(
-                pygame.Vector2(-450, 300),
-                pygame.Vector2(450, -300))):
+    def __init__(self, world_size, hares, wolves, deer_families):
         # means that size of world is [-world_size, world_size] 
-        self.bounds = bounds
+        self.bounds = (
+            pygame.Vector2(-world_size[0]/2, world_size[1]/2),
+            pygame.Vector2(world_size[0]/2, -world_size[1]/2))
 
         self.hunter = Hunter((0, 0))
         
         self.objects = [self.hunter]
 
-        # self.objects = list()
-        for i in range(5):
-            self.objects.append(
-                Hare((0, i), walls_rect=self.bounds))
-
-        for i in range(10):
-            self.objects.append(
-                Deer((0, i), walls_rect=self.bounds))
-            self.objects.append(
-                Deer((0, i), family_id=1, walls_rect=self.bounds))
-            self.objects.append(
-                Deer((0, i), family_id=2, walls_rect=self.bounds))
-
-        for i in range(2):
-            self.objects.append(
-                Wolf((200, 200), walls_rect=self.bounds))         
+        self.spawn_hares(hares)
+        self.spawn_deer_families(deer_families, (3, 10))
+        self.spawn_wolves(wolves)
 
     def update(self, dt, target):
         """Updates game state."""
@@ -72,4 +59,33 @@ class Model():
                 obj.draw(camera, surface, target - obj.pos)
                 continue
 
-            obj.draw(camera, surface)    
+            obj.draw(camera, surface)
+
+    def spawn_hares(self, amount):
+        for i in range(amount):
+            pos = self.get_random_pos()
+            self.objects.append(
+                Hare(pos, walls_rect=self.bounds))
+
+    def spawn_deer_families(self, families_amount, flock_size_range):
+        for family_id in range(families_amount):
+            pos = self.get_random_pos()
+            flock_size = random.randint(*flock_size_range)
+            for j in range(flock_size):
+                self.objects.append(
+                    Deer(pos, family_id=family_id, walls_rect=self.bounds))
+
+    def spawn_wolves(self, amount):
+        for i in range(amount):
+            pos = self.get_random_pos()
+            self.objects.append(
+                Wolf(pos, walls_rect=self.bounds))
+
+    def get_random_pos(self):
+        x = random.randint(
+            self.bounds[0].x,
+            self.bounds[1].x)
+        y = random.randint(
+            self.bounds[1].y,
+            self.bounds[0].y)
+        return pygame.Vector2(x, y)

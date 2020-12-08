@@ -24,7 +24,6 @@ class FlockMember(Seeker):
                 sum_vec += diff_vec
                 amount += 1
 
-        # if amount > 0:
         if sum_vec.length() > 0:
             sum_vec /= amount
             sum_vec.normalize_ip()
@@ -35,15 +34,6 @@ class FlockMember(Seeker):
             return steer
         else:
             return pygame.Vector2(0, 0)
-
-
-        # desired = target - self.pos
-        # desired.scale_to_length(self.maxspeed)
-
-        # steer = desired - self.vel
-        # steer = self.vec_limit(steer, self.maxforce)
-        # steer = -steer
-        # self.apply_force(steer)
 
     def align(self, objects, align_radius=ALIGN_RADIUS):
         amount = 0
@@ -78,7 +68,6 @@ class FlockMember(Seeker):
                 sum_vec += obj.pos
                 amount += 1
 
-        # if amount > 0:
         if sum_vec.length() > 0:
             sum_vec /= amount
             return self.seek(sum_vec)

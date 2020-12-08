@@ -10,7 +10,7 @@ class Hare(Wanderer, FlockMember, WallCoward):
     def __init__(self, pos, **kwargs):
         super().__init__(
             pos=pos,
-            radius=4,
+            radius=5,
             color=(153, 153, 102),
             **kwargs)
 

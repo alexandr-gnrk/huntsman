@@ -16,14 +16,11 @@ class Seeker(GameObject):
     def arrive(self, target, arrive_radius=300):
         desired = target - self.pos
         dist = desired.length()
-        print('Dist:', dist)
 
         if dist < arrive_radius:
-            print('Less', dist/arrive_radius)
             speed = (dist/arrive_radius)*self.maxspeed
             desired.scale_to_length(speed)
         else:
-            print('More')
             desired.scale_to_length(self.maxspeed)
 
         steer = desired - self.vel

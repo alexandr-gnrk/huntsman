@@ -43,22 +43,3 @@ class Wanderer(GameObject):
         steer = desired - self.vel
         steer = self.vec_limit(steer, self.maxforce)
         return steer
-
-        # pygame.draw.line(
-        #     screen, 
-        #     (255, 0, 0),
-        #     camera.adjust(self.pos),
-        #     camera.adjust(future_pos),
-        #     )
-        # pygame.draw.circle(
-        #     screen, 
-        #     (255, 0, 0),
-        #     camera.adjust(future_pos),
-        #     self.wander_radius,
-        #     width=1)
-        # pygame.draw.line(
-        #     screen, 
-        #     (255, 0, 0),
-        #     camera.adjust(future_pos),
-        #     camera.adjust(future_pos + wander_radius_vec),
-        #     )

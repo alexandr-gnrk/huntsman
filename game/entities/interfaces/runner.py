@@ -14,7 +14,6 @@ class Runner(GameObject):
         steer = -steer
         return steer
 
-
     def run_away_objs(self, objs):
         sum_vec = pygame.Vector2(0, 0)
         amount = 0
