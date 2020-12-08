@@ -49,6 +49,8 @@ class View():
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.model = Model()
+        self.moving_direction = pygame.Vector2(0, 0)
+
 
     def redraw(self):
         """Redraw screen according to model of game."""
@@ -64,16 +66,24 @@ class View():
   
     def start(self):
         """Start game loop."""
+        vector_map = {
+            pygame.K_w: pygame.Vector2(0, 1),
+            pygame.K_s: pygame.Vector2(0, -1),
+            pygame.K_a: pygame.Vector2(-1, 0),
+            pygame.K_d: pygame.Vector2(1, 0),
+        }
+
         while True:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
                     exit()
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_w:
-                        pass
-                    elif event.key == pygame.K_SPACE:
-                        pass
+                    if event.key in vector_map:
+                        self.moving_direction += vector_map[event.key]
+                elif event.type == pygame.KEYUP:
+                    if event.key in vector_map:
+                        self.moving_direction -= vector_map[event.key]
 
             self.redraw()
             self.update()
@@ -83,6 +93,7 @@ class View():
             pygame.Vector2(
                 pygame.mouse.get_pos()))
         self.model.update(self.delta_time(), target)
+        self.model.move(self.moving_direction)
         # for obj in self.objs:
         #     obj.update(self.delta_time())
 

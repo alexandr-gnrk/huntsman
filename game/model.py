@@ -13,11 +13,11 @@ class Model():
         # means that size of world is [-world_size, world_size] 
         self.bounds = bounds
 
-        # self.hunter = Hunter((0, 0))
+        self.hunter = Hunter((0, 0))
         
-        # self.objects = [self.hunter]
+        self.objects = [self.hunter]
 
-        self.objects = list()
+        # self.objects = list()
         self.objects.extend([Hare((0, i)) for i in range(1)])
 
         self.objects.extend([Deer((0, i)) for i in range(10)])
@@ -45,11 +45,22 @@ class Model():
             # obj.update(dt)
             obj.update(self.objects, dt)
 
-    # def move(self, direction):
+        if self.hunter.is_alive:
+            self.hunter.update(self.objects, dt)
+
+    def move(self, direction):
+        if self.hunter.is_alive:
+            self.hunter.move(direction)
 
 
     def draw(self, camera, surface):
         """Spawn passed amount of cells on the field."""
         for obj in self.objects:
-            obj.draw(camera, surface)
-    
+            if isinstance(obj, Hunter):
+                target = camera.to_pos(
+                    pygame.Vector2(
+                        pygame.mouse.get_pos()))
+                obj.draw(camera, surface, target - obj.pos)
+                continue
+
+            obj.draw(camera, surface)    
