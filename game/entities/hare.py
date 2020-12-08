@@ -12,8 +12,8 @@ class Hare(Animal, Wanderer, FlockMember, WallCoward):
             pos=pos,
             vel=pygame.Vector2(0, 0),
             acc=pygame.Vector2(0, 0),
-            radius=3,
-            color=(255, 0, 0))
+            radius=4,
+            color=(153, 153, 102))
 
     def update(self, objs, dt):
         wander = self.wander(dt)
