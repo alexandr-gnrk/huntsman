@@ -20,5 +20,4 @@ class Hunter(GameObject):
         if direction.length() > 0:
             direction = pygame.Vector2(direction)
             direction.scale_to_length(self.MOVING_FORCE)
-            print(direction)
             self.apply_force(direction)
