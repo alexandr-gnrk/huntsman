@@ -10,14 +10,14 @@ class FlockMember(Seeker):
     ALIGN_RADIUS = 50
     COHESION_RADIUS = 50
 
-    def separate(self, objects):
+    def separate(self, objects, desired_separation=DESIRED_SEPARATION):
         sum_vec = pygame.Vector2(0, 0)
         amount = 0
 
         for obj in objects:
             dist = self.pos.distance_to(obj.pos)
 
-            if dist > 0 and dist < self.DESIRED_SEPARATION:
+            if dist > 0 and dist < desired_separation:
                 diff_vec = self.pos - obj.pos
                 diff_vec.normalize_ip()
                 diff_vec /= dist

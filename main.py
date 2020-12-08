@@ -1,5 +1,4 @@
 import pygame
-from game.entities import Circle
 from game import Model
 
 

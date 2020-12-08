@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from .entities import Circle
+from .entities import Hare
 
 
 class Model():
@@ -13,9 +13,9 @@ class Model():
         # means that size of world is [-world_size, world_size] 
         self.bounds = bounds
         self.objs = list()
-        for i in range(100):
+        for i in range(10):
             self.objs.append(
-                Circle((0, i), (1, 0), (0, 0), 5, (255, 0, 0))
+                Hare((0, i))
                 )
 
     def update(self, dt, target):
@@ -28,13 +28,14 @@ class Model():
 
             # obj.wander(self.delta_time(), self.screen, self.camera)
      
-            obj.apply_force(obj.wander(dt))
+            # obj.apply_force(obj.wander(dt))
             # obj.apply_force(obj.seek(target))
-            obj.apply_force(obj.wach_out_wall())
-            obj.apply_force(obj.separate(self.objs) * 3)
-            obj.apply_force(obj.align(self.objs))
-            obj.apply_force(obj.cohase(self.objs))
-            obj.update(dt)
+            # obj.apply_force(obj.wach_out_wall())
+            # obj.apply_force(obj.separate(self.objs) * 3)
+            # obj.apply_force(obj.align(self.objs))
+            # obj.apply_force(obj.cohase(self.objs))
+            # obj.update(dt)
+            obj.update(self.objs, dt)
 
     def draw(self, camera, surface):
         """Spawn passed amount of cells on the field."""

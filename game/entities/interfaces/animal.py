@@ -40,4 +40,3 @@ class Animal(GameObject):
                 camera.adjust(point2), 
                 camera.adjust(point3)))
 
-
