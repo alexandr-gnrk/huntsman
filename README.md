@@ -1,4 +1,4 @@
-# Huntsman
+# Huntsman (Hunter)
 This is simple 2D hunting game that uses steering behaviors.
 
 ![Demo](./screenshots/huntsman_demo.gif)
@@ -8,6 +8,28 @@ This is simple 2D hunting game that uses steering behaviors.
 - [PyGame](https://www.pygame.org/)
 - [Autonomous Agents](https://natureofcode.com/book/chapter-6-autonomous-agents/)
 - [Understanding Steering Behaviors](https://gamedevelopment.tutsplus.com/series/understanding-steering-behaviors--gamedev-12732)
+
+## Autonomous agents
+**Hunter**
+- a player with shotgun who hunts animals
+- can be killed by a wolf
+
+**Hares**:
+- move slowly (wandering)
+- quickly run away from any other creatures, even other hares
+
+**Fallow deer**: 
+- that move (wander) and run away in groups
+- rejoin the group if for some reason they get separated
+- are afraid of hunters and wolves
+- they sense wolves from afar and avoid them
+
+**Wolves**:
+- loners, attack hares, fallow deer and hunters
+- they wander, but have a smaller radius of smell than deers
+- after catching up with their prey they kill it
+- die if they can't find their prey for some time
+
 
 ## Setup
 Clone the repository and change the working directory:
